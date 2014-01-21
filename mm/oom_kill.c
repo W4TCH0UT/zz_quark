@@ -79,7 +79,6 @@ static bool has_intersects_mems_allowed(struct task_struct *start,
 			 * check the mems of tsk's cpuset.
 			 */
 			ret = cpuset_mems_allowed_intersects(current, tsk);
-		}
 		if (ret)
 			break;
 	}
