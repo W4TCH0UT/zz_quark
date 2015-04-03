@@ -32,7 +32,6 @@
 		qcom,pm-qos-active-latency = <501>;
 		qcom,pm-qos-wakeup-latency = <101>;
 
-
 		/* Bus Scale Settings */
 		qcom,bus-control;
 		qcom,msm-bus,name = "grp3d";
