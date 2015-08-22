@@ -347,7 +347,7 @@ CHECK		= sparse
 
 CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 		  -Wbitwise -Wno-return-void $(CF)
-KERNEL_FLAGS	= -pipe -DNDEBUG -Ofast -mtune=cortex-a15 -fbranch-target-load-optimize -mcpu=cortex-a15 -marm -funsafe-math-optimizations -fstrict-aliasing -fivopts -fipa-pta -fira-hoist-pressure -fno-common -ftree-vectorize -ftree-loop-ivcanon -fmodulo-sched -fmodulo-sched-allow-regmoves -mvectorize-with-neon-quad -munaligned-access -fsingle-precision-constant -fpredictive-commoning -floop-nest-optimize -fgraphite -fgraphite-identity -floop-parallelize-all -ftree-loop-linear -ftree-loop-im -floop-interchange -floop-strip-mine -floop-block -floop-flatten -fgcse-after-reload -fgcse-las -fprefetch-loop-arrays -fstrict-aliasing -Werror=strict-aliasing -Wno-array-bounds -Wno-error=strict-overflow -fuse-linker-plugin -std=gnu89
+KERNEL_FLAGS	= -pipe -DNDEBUG -Ofast -mtune=cortex-a15 -fbranch-target-load-optimize -mcpu=cortex-a15 -marm -funsafe-math-optimizations -fivopts -fipa-pta -fira-hoist-pressure -fno-common -ftree-vectorize -ftree-loop-ivcanon -fmodulo-sched -fmodulo-sched-allow-regmoves -mvectorize-with-neon-quad -munaligned-access -fsingle-precision-constant -fpredictive-commoning -floop-nest-optimize -fgraphite -fgraphite-identity -floop-parallelize-all -ftree-loop-linear -ftree-loop-im -floop-interchange -floop-strip-mine -floop-block -floop-flatten -fgcse-after-reload -fgcse-las -fprefetch-loop-arrays -Wno-array-bounds -Wno-error=strict-overflow -fuse-linker-plugin -std=gnu89
 MOD_FLAGS	= -DMODULE $(KERNEL_FLAGS)
 CFLAGS_MODULE   = $(MOD_FLAGS)
 AFLAGS_MODULE   = $(MOD_FLAGS)
