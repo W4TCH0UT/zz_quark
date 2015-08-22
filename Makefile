@@ -246,8 +246,8 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 
 HOSTCC       = gcc
 HOSTCXX      = g++
-HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -Ofast -fomit-frame-pointer -std=gnu89
-HOSTCXXFLAGS = -Ofast
+HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -Ofast -pipe -DNDEBUG -floop-nest-optimize -fgraphite -fgraphite-identity -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block -fomit-frame-pointer -std=gnu89
+HOSTCXXFLAGS = -pipe -DNDEBUG -Ofast -floop-nest-optimize -fgraphite -fgraphite-identity -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block
 
 # Decide whether to build built-in, modular, or both.
 # Normally, just do built-in.
@@ -347,11 +347,13 @@ CHECK		= sparse
 
 CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 		  -Wbitwise -Wno-return-void $(CF)
-CFLAGS_MODULE   =
-AFLAGS_MODULE   =
+KERNEL_FLAGS	= -pipe -DNDEBUG -Ofast -mtune=cortex-a15 -fbranch-target-load-optimize -mcpu=cortex-a15 -marm -funsafe-math-optimizations -fstrict-aliasing -fivopts -fipa-pta -fira-hoist-pressure -fno-common -ftree-vectorize -ftree-loop-ivcanon -fmodulo-sched -fmodulo-sched-allow-regmoves -mvectorize-with-neon-quad -munaligned-access -fsingle-precision-constant -fpredictive-commoning -floop-nest-optimize -fgraphite -fgraphite-identity -floop-parallelize-all -ftree-loop-linear -ftree-loop-im -floop-interchange -floop-strip-mine -floop-block -floop-flatten -fgcse-after-reload -fgcse-las -fprefetch-loop-arrays -fstrict-aliasing -Werror=strict-aliasing -Wno-array-bounds -Wno-error=strict-overflow -fuse-linker-plugin -std=gnu89
+MOD_FLAGS	= -DMODULE $(KERNEL_FLAGS)
+CFLAGS_MODULE   = $(MOD_FLAGS)
+AFLAGS_MODULE   = $(MOD_FLAGS)
 LDFLAGS_MODULE  =
-CFLAGS_KERNEL	=
-AFLAGS_KERNEL	=
+CFLAGS_KERNEL	= $(KERNEL_FLAGS)
+AFLAGS_KERNEL	= $(KERNEL_FLAGS)
 CFLAGS_GCOV	= -fprofile-arcs -ftest-coverage
 
 
@@ -375,17 +377,17 @@ LINUXINCLUDE    := \
 KBUILD_CPPFLAGS := -D__KERNEL__
 
 KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
-		   -fno-strict-aliasing -fno-common \
 		   -Werror-implicit-function-declaration \
 		   -Wno-format-security \
 		   -fno-delete-null-pointer-checks \
-		   -std=gnu89
+		   -std=gnu89 \
+		   $(KERNEL_FLAGS)
 
-KBUILD_AFLAGS_KERNEL :=
-KBUILD_CFLAGS_KERNEL :=
+KBUILD_AFLAGS_KERNEL := $(KERNEL_FLAGS)
+KBUILD_CFLAGS_KERNEL := $(KERNEL_FLAGS)
 KBUILD_AFLAGS   := -D__ASSEMBLY__
-KBUILD_AFLAGS_MODULE  := -DMODULE
-KBUILD_CFLAGS_MODULE  := -DMODULE
+KBUILD_AFLAGS_MODULE  := $(MOD_FLAGS)
+KBUILD_CFLAGS_MODULE  := $(MOD_FLAGS)
 KBUILD_LDFLAGS_MODULE := -T $(srctree)/scripts/module-common.lds
 
 # Read KERNELRELEASE from include/config/kernel.release (if it exists)
